@@ -1,4 +1,4 @@
-const insertIntoArray = (arr, index, newItem) => [
+const insertIntoArray = (arr: string[], index: number, newItem: string): string[] => [
     // part of the array before the specified index
     ...arr.slice(0, index),
     // inserted item
@@ -8,7 +8,7 @@ const insertIntoArray = (arr, index, newItem) => [
 ]
 
 
-const minimalDistance = (word1, word2) => {
+const minimalDistance = (word1: string, word2: string) => {
     const n = word1.length;
     const m = word2.length;
     const dp = Array(n);
