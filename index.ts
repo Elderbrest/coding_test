@@ -7,18 +7,17 @@ const insertIntoArray = (arr: string[], index: number, newItem: string): string[
     ...arr.slice(index)
 ]
 
+const getDistanceMatrix = (fromIndex: number, targetIndex: number, distanceMatrix: number[][]) => {
+    if (fromIndex < 0 && targetIndex < 0) return 0;
+    if (fromIndex < 0) return targetIndex + 1;
+    if (targetIndex < 0) return fromIndex + 1;
+    return distanceMatrix[fromIndex][targetIndex];
+};
 
 const minimalDistance = (word1: string, word2: string) => {
     const word1Length = word1.length;
     const word2Length = word2.length;
     const distanceMatrix: number[][] = Array(word1Length);
-
-    const getDistanceMatrix = (fromIndex: number, targetIndex: number, distanceMatrix: number[][]) => {
-        if (fromIndex < 0 && targetIndex < 0) return 0;
-        if (fromIndex < 0) return targetIndex + 1;
-        if (targetIndex < 0) return fromIndex + 1;
-        return distanceMatrix[fromIndex][targetIndex];
-    };
 
     for (let i = 0; i < word1Length; i++) {
         distanceMatrix[i] = Array(word2Length);
