@@ -9,59 +9,59 @@ const insertIntoArray = (arr: string[], index: number, newItem: string): string[
 
 
 const minimalDistance = (word1: string, word2: string) => {
-    const n = word1.length;
-    const m = word2.length;
-    const dp = Array(n);
+    const word1Length = word1.length;
+    const word2Length = word2.length;
+    const distanceMatrix: number[][] = Array(word1Length);
 
-    const getDp = (i, j, dp) => {
-        if (i < 0 && j < 0) return 0;
-        if (i < 0) return j + 1;
-        if (j < 0) return i + 1;
-        return dp[i][j];
+    const getDistanceMatrix = (fromIndex: number, targetIndex: number, distanceMatrix: number[][]) => {
+        if (fromIndex < 0 && targetIndex < 0) return 0;
+        if (fromIndex < 0) return targetIndex + 1;
+        if (targetIndex < 0) return fromIndex + 1;
+        return distanceMatrix[fromIndex][targetIndex];
     };
 
-    for (let i = 0; i < n; i++) {
-        dp[i] = Array(m);
-        for (let j = 0; j < m; j++) {
-            dp[i][j] = Math.min(
-                getDp(i - 1, j, dp) + 1,
-                getDp(i, j - 1, dp) + 1,
-                getDp(i - 1, j - 1, dp) + (word1[i] === word2[j] ? 0 : 1)
+    for (let i = 0; i < word1Length; i++) {
+        distanceMatrix[i] = Array(word2Length);
+        for (let j = 0; j < word2Length; j++) {
+            distanceMatrix[i][j] = Math.min(
+                getDistanceMatrix(i - 1, j, distanceMatrix) + 1,
+                getDistanceMatrix(i, j - 1, distanceMatrix) + 1,
+                getDistanceMatrix(i - 1, j - 1, distanceMatrix) + (word1[i] === word2[j] ? 0 : 1)
             );
         }
     }
 
-    let distance = getDp(n - 1, m - 1, dp);
+    let distance = getDistanceMatrix(word1Length - 1, word2Length - 1, distanceMatrix);
     console.log(distance);
-    let curI = n - 1;
-    let curJ = m - 1;
-    let curWord = Array.from(word2);
+    let currentFromIndex = word1Length - 1;
+    let currentTargetIndex = word2Length - 1;
+    let currentWord = Array.from(word2);
 
 
-    console.log(curWord.join(''));
+    console.log(currentWord.join(''));
     while (distance > 0) {
-        const del = getDp(curI, curJ - 1, dp);
-        const insert = getDp(curI - 1, curJ, dp);
-        const replace = getDp(curI - 1, curJ - 1, dp);
+        const del = getDistanceMatrix(currentFromIndex, currentTargetIndex - 1, distanceMatrix);
+        const insert = getDistanceMatrix(currentFromIndex - 1, currentTargetIndex, distanceMatrix);
+        const replace = getDistanceMatrix(currentFromIndex - 1, currentTargetIndex - 1, distanceMatrix);
         if (replace < distance) {
-            curWord[curJ] = word1[curI];
-            curI -= 1;
-            curJ -= 1;
+            currentWord[currentTargetIndex] = word1[currentFromIndex];
+            currentFromIndex -= 1;
+            currentTargetIndex -= 1;
             distance = replace;
-            console.log(curWord.join(''));
+            console.log(currentWord.join(''));
         } else if (del < distance) {
-            curWord[curJ] = '';
-            curJ -= 1;
+            currentWord[currentTargetIndex] = '';
+            currentTargetIndex -= 1;
             distance = del;
-            console.log(curWord.join(''));
+            console.log(currentWord.join(''));
         } else if (insert < distance) {
-            curWord = insertIntoArray(curWord, curJ + 1, word1[curI]);
-            curI -= 1;
+            currentWord = insertIntoArray(currentWord, currentTargetIndex + 1, word1[currentFromIndex]);
+            currentFromIndex -= 1;
             distance = insert;
-            console.log(curWord.join(''));
+            console.log(currentWord.join(''));
         } else {
-            curI -= 1;
-            curJ -= 1;
+            currentFromIndex -= 1;
+            currentTargetIndex -= 1;
         }
     }
 };
