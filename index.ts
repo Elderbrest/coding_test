@@ -19,9 +19,9 @@ const minimalDistance = (word1: string, word2: string) => {
     const word2Length = word2.length;
     const distanceMatrix: number[][] = Array(word1Length);
 
-    for (let i = 0; i < word1Length; i++) {
+    for (let i = 0; i <= word1Length; i++) {
         distanceMatrix[i] = Array(word2Length);
-        for (let j = 0; j < word2Length; j++) {
+        for (let j = 0; j <= word2Length; j++) {
             distanceMatrix[i][j] = Math.min(
                 getDistanceMatrix(i - 1, j, distanceMatrix) + 1,
                 getDistanceMatrix(i, j - 1, distanceMatrix) + 1,
