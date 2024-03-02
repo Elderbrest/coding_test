@@ -7,7 +7,7 @@ const insertIntoArray = (arr: string[], index: number, newItem: string): string[
     ...arr.slice(index)
 ]
 
-const getDistanceMatrix = (fromIndex: number, targetIndex: number, distanceMatrix: number[][]) => {
+const getDistanceMatrixStep = (fromIndex: number, targetIndex: number, distanceMatrix: number[][]) => {
     if (fromIndex < 0 && targetIndex < 0) return 0;
     if (fromIndex < 0) return targetIndex + 1;
     if (targetIndex < 0) return fromIndex + 1;
@@ -23,14 +23,14 @@ const minimalDistance = (word1: string, word2: string) => {
         distanceMatrix[i] = Array(word2Length);
         for (let j = 0; j <= word2Length; j++) {
             distanceMatrix[i][j] = Math.min(
-                getDistanceMatrix(i - 1, j, distanceMatrix) + 1,
-                getDistanceMatrix(i, j - 1, distanceMatrix) + 1,
-                getDistanceMatrix(i - 1, j - 1, distanceMatrix) + (word1[i] === word2[j] ? 0 : 1)
+                getDistanceMatrixStep(i - 1, j, distanceMatrix) + 1,
+                getDistanceMatrixStep(i, j - 1, distanceMatrix) + 1,
+                getDistanceMatrixStep(i - 1, j - 1, distanceMatrix) + (word1[i] === word2[j] ? 0 : 1)
             );
         }
     }
 
-    let distance = getDistanceMatrix(word1Length - 1, word2Length - 1, distanceMatrix);
+    let distance = getDistanceMatrixStep(word1Length - 1, word2Length - 1, distanceMatrix);
     console.log(distance);
     let currentFromIndex = word1Length - 1;
     let currentTargetIndex = word2Length - 1;
@@ -39,9 +39,9 @@ const minimalDistance = (word1: string, word2: string) => {
 
     console.log(currentWord.join(''));
     while (distance > 0) {
-        const del = getDistanceMatrix(currentFromIndex, currentTargetIndex - 1, distanceMatrix);
-        const insert = getDistanceMatrix(currentFromIndex - 1, currentTargetIndex, distanceMatrix);
-        const replace = getDistanceMatrix(currentFromIndex - 1, currentTargetIndex - 1, distanceMatrix);
+        const del = getDistanceMatrixStep(currentFromIndex, currentTargetIndex - 1, distanceMatrix);
+        const insert = getDistanceMatrixStep(currentFromIndex - 1, currentTargetIndex, distanceMatrix);
+        const replace = getDistanceMatrixStep(currentFromIndex - 1, currentTargetIndex - 1, distanceMatrix);
         if (replace < distance) {
             currentWord[currentTargetIndex] = word1[currentFromIndex];
             currentFromIndex -= 1;
