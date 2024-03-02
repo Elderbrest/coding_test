@@ -34,6 +34,10 @@ const getDistanceMatrix = (word1: string, word2: string) => {
 };
 
 const getMinimalDistance = (word1: string, word2: string, logIsEnabled = false) => {
+    if (word1.length === 0 || word2.length === 0) {
+        return Math.max(word1.length, word2.length);
+    }
+
     const distanceMatrix = getDistanceMatrix(word1, word2);
     const distance = getDistanceMatrixStep(word1.length - 1, word2.length - 1, distanceMatrix);
 
