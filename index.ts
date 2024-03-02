@@ -50,24 +50,25 @@ const logWordsTransition = (word1: string, word2: string, distance: number) => {
 
     console.log(currentWord.join(''));
     while (distance > 0) {
-        const del = getDistanceMatrixStep(currentFromIndex, currentTargetIndex - 1, distanceMatrix);
-        const insert = getDistanceMatrixStep(currentFromIndex - 1, currentTargetIndex, distanceMatrix);
-        const replace = getDistanceMatrixStep(currentFromIndex - 1, currentTargetIndex - 1, distanceMatrix);
-        if (replace < distance) {
+        const deleteStepValue = getDistanceMatrixStep(currentFromIndex, currentTargetIndex - 1, distanceMatrix);
+        const insertStepValue = getDistanceMatrixStep(currentFromIndex - 1, currentTargetIndex, distanceMatrix);
+        const replaceStepValue = getDistanceMatrixStep(currentFromIndex - 1, currentTargetIndex - 1, distanceMatrix);
+
+        if (replaceStepValue < distance) {
             currentWord[currentTargetIndex] = word1[currentFromIndex];
             currentFromIndex -= 1;
             currentTargetIndex -= 1;
-            distance = replace;
+            distance = replaceStepValue;
             console.log(currentWord.join(''));
-        } else if (del < distance) {
+        } else if (deleteStepValue < distance) {
             currentWord[currentTargetIndex] = '';
             currentTargetIndex -= 1;
-            distance = del;
+            distance = deleteStepValue;
             console.log(currentWord.join(''));
-        } else if (insert < distance) {
+        } else if (insertStepValue < distance) {
             currentWord = insertIntoArray(currentWord, currentTargetIndex + 1, word1[currentFromIndex]);
             currentFromIndex -= 1;
-            distance = insert;
+            distance = insertStepValue;
             console.log(currentWord.join(''));
         } else {
             currentFromIndex -= 1;
