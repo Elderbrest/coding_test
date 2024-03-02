@@ -1,3 +1,5 @@
+import { validateWordsType } from "./validator";
+
 const insertIntoArray = (arr: string[], index: number, newItem: string): string[] => [
     // part of the array before the specified index
     ...arr.slice(0, index),
@@ -34,6 +36,8 @@ const getDistanceMatrix = (word1: string, word2: string) => {
 };
 
 const getMinimalDistance = (word1: string, word2: string, logIsEnabled = false) => {
+    validateWordsType(word1, word2);
+
     if (word1.length === 0 || word2.length === 0) {
         return Math.max(word1.length, word2.length);
     }
