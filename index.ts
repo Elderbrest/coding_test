@@ -5,7 +5,7 @@ const insertIntoArray = (arr: string[], index: number, newItem: string): string[
     newItem,
     // part of the array after the specified index
     ...arr.slice(index)
-]
+];
 
 const getDistanceMatrixStep = (fromIndex: number, targetIndex: number, distanceMatrix: number[][]) => {
     if (fromIndex < 0 && targetIndex < 0) return 0;
@@ -14,7 +14,7 @@ const getDistanceMatrixStep = (fromIndex: number, targetIndex: number, distanceM
     return distanceMatrix[fromIndex][targetIndex];
 };
 
-const minimalDistance = (word1: string, word2: string) => {
+const getDistanceMatrix = (word1: string, word2: string) => {
     const word1Length = word1.length;
     const word2Length = word2.length;
     const distanceMatrix: number[][] = Array(word1Length);
@@ -30,12 +30,23 @@ const minimalDistance = (word1: string, word2: string) => {
         }
     }
 
-    let distance = getDistanceMatrixStep(word1Length - 1, word2Length - 1, distanceMatrix);
-    console.log(distance);
-    let currentFromIndex = word1Length - 1;
-    let currentTargetIndex = word2Length - 1;
-    let currentWord = Array.from(word2);
+    return distanceMatrix;
+};
 
+const getMinimalDistance = (word1: string, word2: string, logIsEnabled = false) => {
+    const distanceMatrix = getDistanceMatrix(word1, word2);
+    const distance = getDistanceMatrixStep(word1.length - 1, word2.length - 1, distanceMatrix);
+
+    logIsEnabled && logWordsTransition(word1, word2, distance);
+
+    return distance;
+};
+
+const logWordsTransition = (word1: string, word2: string, distance: number) => {
+    let currentFromIndex = word1.length - 1;
+    let currentTargetIndex = word2.length - 1;
+    let currentWord = Array.from(word2);
+    const distanceMatrix = getDistanceMatrix(word1, word2);
 
     console.log(currentWord.join(''));
     while (distance > 0) {
@@ -66,7 +77,7 @@ const minimalDistance = (word1: string, word2: string) => {
 };
 
 (() => {
-    minimalDistance(process.argv[2], process.argv[3]);
+    console.log(getMinimalDistance(process.argv[2], process.argv[3], true));
 })();
 
 
