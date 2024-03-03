@@ -1,6 +1,6 @@
 import { validateWordsType } from "./validator";
 
-const insertIntoArray = (arr: string[], index: number, newItem: string): string[] => [
+export const insertIntoArray = (arr: string[], index: number, newItem: string): string[] => [
     // part of the array before the specified index
     ...arr.slice(0, index),
     // inserted item
@@ -16,7 +16,7 @@ const getDistanceMatrixStep = (fromIndex: number, targetIndex: number, distanceM
     return distanceMatrix[fromIndex][targetIndex];
 };
 
-const getDistanceMatrix = (word1: string, word2: string) => {
+export const getDistanceMatrix = (word1: string, word2: string) => {
     const word1Length = word1.length;
     const word2Length = word2.length;
     const distanceMatrix: number[][] = Array(word1Length);
@@ -35,7 +35,7 @@ const getDistanceMatrix = (word1: string, word2: string) => {
     return distanceMatrix;
 };
 
-const getMinimalDistance = (word1: string, word2: string, logIsEnabled = false) => {
+export const getMinimalDistance = (word1: string, word2: string, logIsEnabled = false) => {
     validateWordsType(word1, word2);
 
     if (word1.length === 0 || word2.length === 0) {
